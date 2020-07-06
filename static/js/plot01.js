@@ -30,7 +30,7 @@ function myFunction() {
     // console.log(endpoint);
     }
 
-var endpoint = goData.slice(0,10);
+var endpoint = goData.slice(0,20);
 buildtable(endpoint);
 
 function buildtable(response) {
