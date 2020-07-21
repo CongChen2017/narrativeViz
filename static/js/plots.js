@@ -112,8 +112,8 @@ function buildLineChart(player) {
         var data = [trace];
 
         var layout = {
-              width: 700,
-              height: 400,
+              width: 800,
+              height: 450,
               title: "Go Player(s) Rating",
               yaxis: {
                 title: "Elo Score"
