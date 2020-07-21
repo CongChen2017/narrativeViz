@@ -1,131 +1,123 @@
 var $size = Plotly.d3.select("#teamsize");
 $size.on('change', function() {
     var teamsize = $size.property('value');
-    console.log(teamsize);
-    var base_url = "/teamfight/";
+    //console.log(teamsize);
+    // var base_url = "/teamfight/";
 
-    endpoint = base_url + teamsize;
+    // endpoint = base_url + teamsize;
     // console.log(endpoint);
         // console.log(endpoint);
-    Plotly.d3.json(endpoint, function(error, response) {
+    Plotly.d3.json("https://raw.githubusercontent.com/CongChen2017/CongChen2017.github.io/master/temp/fulldata.json", function(error, response) {
             console.log(response);
-        
-    var games_label = [];
-    var cn_players = [];
-    var kr_players = [];
-    var wins = [];
-    var losses = [];
-    var results = [];
+            // console.log(teamsize);
+    var cn_names = [];
+    var cn_age = [];
+    var cn_total = [];
+    var cn_winrate = [];
+    var kr_names = [];
+    var kr_age = [];
+    var kr_total = [];
+    var kr_winrate = [];
+    
+
     for (i=0; i<response.length; i++) {
-        games_label.push(response[i].cn_name + " vs " + response[i].kr_name);
-        cn_players.push(response[i].cn_name);
-        kr_players.push(response[i].kr_name);
-        wins.push(-response[i].Win);
-        losses.push(response[i].Loss);
-        results.push(response[i].Result);
+        if (response[i].Nation == "kr" & kr_names.length < teamsize) {
+            kr_names.push(response[i].Name);
+            kr_age.push(2020-response[i].Birthday.slice(0,4));
+            kr_winrate.push(response[i].Wins/response[i].Total*100);
+            kr_total.push(response[i].Total);
+        }
+        if (response[i].Nation == "cn" & cn_names.length < teamsize) {
+            cn_names.push(response[i].Name);
+            cn_age.push(2020-response[i].Birthday.slice(0,4));
+            cn_winrate.push(response[i].Wins/response[i].Total*100);
+            cn_total.push(response[i].Total);
+        }
+    };
+    
+    var max_age = Math.max.apply(Math, kr_age.concat(cn_age));
+    console.log(max_age);
+    // console.log(kr_age);
+    // console.log(cn_names);
+    // console.log(cn_age);
+
+    var trace1 = {
+      x: cn_age,
+      y: cn_winrate,
+      mode: 'markers',
+      type: 'scatter',
+      name: 'Team China',
+      text: cn_names,
+      marker: { size: 12,
+      color: 'rgba(255, 99, 132, 0.7)' }
     };
 
-    // console.log(games_label);
-    // console.log(wins);
-    console.log(results);
-    var W = 0;
-    var L = 0;
-    var D = 0;
-
-    for (j=0; j<results.length; j++) {
-        if (results[j]=="Win") {
-            W = W+1;
-        }
-        else if (results[j] == "Draw") {
-            D = D+1;
-        }
-        else { L = L+1; }
+    var trace2 = {
+      x: kr_age,
+      y: kr_winrate,
+      mode: 'markers',
+      type: 'scatter',
+      name: 'Team S. Korea',
+      text: kr_names,
+      marker: { size: 12,
+      color: 'rgba(54, 162, 235, 0.7)' }
     };
+
+    var data = [ trace1, trace2 ];
+    // console.log(data);
 
     var color = Chart.helpers.color;
-    var horizontalBarChartData = {
-        labels: games_label,
-        datasets: [{
-            label: 'Wins',
-            backgroundColor: 'rgba(255, 0, 0, 0.8)',
-            // borderColor: window.chartColors.red,
-            borderWidth: 1,
-            data: wins,
-            yAxisID: 'bar-y-axis1'
-        }, {
-            label: 'Losses',
-            backgroundColor: 'rgba(0, 0, 255, 0.8)',
-            // borderColor: window.chartColors.blue,
-            data: losses,
-            yAxisID: 'bar-y-axis1'
-        }]
 
+    var layout = {
+      xaxis: {
+        range: [ 18, max_age+2 ],
+        title: {
+          text: 'Age',
+          font: {
+            family: 'Courier New, monospace',
+            size: 18,
+            color: 'black'
+          }
+      },
+    },
+      yaxis: {
+        range: [40, 80],
+        title: {
+          text: 'Win Rate (%)',
+          font: {
+            family: 'Arial, monospace',
+            size: 18,
+            color: '#7f7f7f'
+          }
+      },
+      },
+      legend: {
+        y: 0.5,
+        yref: 'paper',
+        font: {
+          family: 'Arial, sans-serif',
+          size: 16,
+          color: 'grey',
+        }
+      },
+      title:"Top Player's Age vs Win Rate"
     };
 
-    if(window.myHorizontalBar) {window.myHorizontalBar.destroy()};
+    Plotly.newPlot('summary', data, layout);
 
-    var ctx = document.getElementById('canvas').getContext('2d');
-    window.myHorizontalBar = new Chart(ctx, {
-        type: 'horizontalBar',
-        data: horizontalBarChartData,
-        options: {
-            // Elements options apply to all of the options unless overridden in a dataset
-            // In this case, we are setting the border of each horizontal bar to be 2px wide
-            elements: {
-                rectangle: {
-                    borderWidth: 2,
-                }
-            },
-            title: {
-                display: true,
-                fontSize: 17,
-                text: 'Game Records Between Players'
-            },
-            responsive: true,
-            legend: {
-                display: true,
-                position: "bottom",
-            },
-            scales: {
-                xAxes: [{
-                    display: false,
-                    stacked: true,
-                    id:'bar-x-axis',
-                }],
-                yAxes: [{
-                    display: true,
-                    stacked: true,
-                    id:'bar-y-axis1',
-                    ticks: {
-                    // Include a dollar sign in the ticks
-                    display: true,
-                    autoSkip: false,
-                    beginAtZero: true,
-                    // callback: function(value, index, values) {
-                    //     return '$' + value;
-                    // }
-                }
-                }]
-    }}
-    // $.ajax({}).done(function (response){
-    //     chart.data = response;
-    //     chart.update();
-    // })
-    });
+    // if(window.myHorizontalBar) {window.myHorizontalBar.destroy()};
 
-    var table_data = [{
-        type: 'table',
-        header: {
-            values: [["Wins"], ["Losses"], ["Ties"]],
-            align: "center",
-
-        },
-        cells: {
-            values: [[W],[L],[D]]
-        }
-    }]
-
-    Plotly.plot('summary', table_data);
+    // var ctx = document.getElementById('canvas').getContext('2d');
+    // window.myHorizontalBar = new Chart(ctx, {
+    //     type: 'scatter',
+    //     data: data,
+    //     layout: layout
+        
+    // // $.ajax({}).done(function (response){
+    // //     chart.data = response;
+    // //     chart.update();
+    // // })
+    // });
 
     });
 });
