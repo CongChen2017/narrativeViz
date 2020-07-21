@@ -1,12 +1,7 @@
 var $size = Plotly.d3.select("#teamsize");
 $size.on('change', function() {
     var teamsize = $size.property('value');
-    //console.log(teamsize);
-    // var base_url = "/teamfight/";
 
-    // endpoint = base_url + teamsize;
-    // console.log(endpoint);
-        // console.log(endpoint);
     Plotly.d3.json("https://raw.githubusercontent.com/CongChen2017/CongChen2017.github.io/master/temp/fulldata.json", function(error, response) {
             console.log(response);
             // console.log(teamsize);
@@ -37,9 +32,6 @@ $size.on('change', function() {
     
     var max_age = Math.max.apply(Math, kr_age.concat(cn_age));
     console.log(max_age);
-    // console.log(kr_age);
-    // console.log(cn_names);
-    // console.log(cn_age);
 
     var trace1 = {
       x: cn_age,
@@ -105,19 +97,6 @@ $size.on('change', function() {
 
     Plotly.newPlot('summary', data, layout);
 
-    // if(window.myHorizontalBar) {window.myHorizontalBar.destroy()};
-
-    // var ctx = document.getElementById('canvas').getContext('2d');
-    // window.myHorizontalBar = new Chart(ctx, {
-    //     type: 'scatter',
-    //     data: data,
-    //     layout: layout
-        
-    // // $.ajax({}).done(function (response){
-    // //     chart.data = response;
-    // //     chart.update();
-    // // })
-    // });
 
     });
 });

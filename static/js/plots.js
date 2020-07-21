@@ -65,12 +65,10 @@ function optionChanged2() {
     // Call plot function with the new sample value
     updateLineChart(selectedPlayer);
 };
-// var base_url = "http://localhost:5000";
+
 
 function buildLineChart(player) {
 
-     // Get data from '/sample/<sample>' endpoint (for our metadata table)
-     // endpoint = "/players/" + player;
      Plotly.d3.json("https://raw.githubusercontent.com/CongChen2017/CongChen2017.github.io/master/temp/fulldata.json", function(error, all_data) {
          // console.log(response.Games.Result);
          
@@ -112,8 +110,8 @@ function buildLineChart(player) {
         var data = [trace];
 
         var layout = {
-              width: 800,
-              height: 450,
+              // width: 800,
+              // height: 450,
               title: "Go Player(s) Rating",
               yaxis: {
                 title: "Elo Score"
@@ -125,62 +123,7 @@ function buildLineChart(player) {
         
         Plotly.newPlot('plot', data, layout);
 
-        // var gamenumber = Plotly.d3.select('#selLast').property('value');
-        // buildbarchart(gamenumber);
-
-        // Plotly.d3.select('#selLast').on('change', optionChanged3);
-
-        // function optionChanged3() {
-        //     selectgames = Plotly.d3.select('#selLast').property('value');
-        //     buildbarchart(selectgames);
-        // };
-
-    //     function buildbarchart(num) {
-    //         var game_data = [];
-    //         var opponents =[];
-    //         var x_axis = [];
-    //         for (j=0; j<num; j++) {
-    //             x_axis.push(j);
-    //             var recent = response.Games.Result[j]
-    //             if (recent === 'Win') {
-    //                 game_data.push(0.5);
-    //             }
-    //             else {
-    //                 game_data.push(-0.5);
-    //             }
-    //             opponents.push(response.Games.Opponent[j]);
-    //         };
-            
-            
-    //         console.log(game_data);
-
-    //         var bar_data = [
-    //             {
-    //               type: 'bar',
-    //               x: x_axis,
-    //               y: game_data,
-    //               text: opponents,
-    //               base: 0,
-    //               marker: {
-    //                 color: 'blue'
-    //               },
-    //               name: 'Target gamer'
-    //             }]
-
-    //         var bar_layout = {
-    //             xaxis: {
-    //                 zeroline: false,
-    //                 showline: false,
-    //                 showticklabels: false
-    //             },
-    //             yaxis: {
-    //                 showline: false,
-    //                 showticklabels: false
-    //             }
-    //         };
-
-    //         Plotly.newPlot("bar", bar_data, bar_layout);
-    //         };
+        
             
 
     });
@@ -201,8 +144,7 @@ function getRandomColor() {
 
 function updateLineChart(player) {
 
-     // Get data from '/sample/<sample>' endpoint (for our metadata table)
-     // endpoint = "/players/" + player;
+
      Plotly.d3.json("https://raw.githubusercontent.com/CongChen2017/CongChen2017.github.io/master/temp/fulldata.json", function(error, all_data) {
          var response = all_data[player-1];
          console.log(response)

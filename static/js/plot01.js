@@ -2,8 +2,6 @@ d3.json("https://raw.githubusercontent.com/CongChen2017/CongChen2017.github.io/m
   if (error) console.error;
 
   console.log(goData);
-  // var test = goData.slice(1,11);
-  // console.log(test);
 
 var $selSamples = Plotly.d3.select("#ddlViewBy");
 var $plotly = Plotly.d3.select('#PieChart').select(".plotly");
@@ -34,13 +32,6 @@ var endpoint = goData.slice(0,20);
 buildtable(endpoint);
 
 function buildtable(response) {
-    // Plotly.d3.json(endpoint, function(error, response) {
-    //     console.log(response)
-        // console.log(response.name)
-        // console.log(response.rank)
-
-        // put data into table
-        // var response = goData;
 
         var name_list = [];
         var elo_list = [];
@@ -75,7 +66,6 @@ function buildtable(response) {
         var country_count =[];
         
 
-        // var unique_nation = nation_list.filter(function(v,i) { return i==nation_list.lastIndexOf(v); });
         var unique_nation = ['kr', 'jp', 'cn'];
 
         for (j=0; j<unique_nation.length; j++){
@@ -114,16 +104,8 @@ function buildtable(response) {
                   }
                 };
 
-            // Output pie plot
-            // if ($plotly.node() != null) {   // Redraw, if updating
-            //     var PlotArea = document.getElementById("PieChart");
-            //     // Call plotly.restyle to pass new data to it
-            //     Plotly.restyle(PlotArea, "values", [pie_data]);
-            // } else {
-            //     // Build it fresh
             Plotly.newPlot("PieChart", pie_data, pie_layout);
-            //     isBeingUpdated = true;  // From now on, we are updating the plot
-            // } 
+   
 
         var table_values = [
           rank_list,
@@ -177,12 +159,8 @@ function buildtable(response) {
                        data:{
                            labels:name_list,
                            datasets:[{
-                               // label: ,
                                data:elo_list,
                            backgroundColor:nation_color,
-                           // 'rgba(255, 99, 132, 0.2)'
-                           // 'rgba(54, 162, 235, 0.2)',
-                           // 'rgba(255, 206, 86, 0.2)'
                            borderWidth:1,
                            hoverBorderWidth:2
 
